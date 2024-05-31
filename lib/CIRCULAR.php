@@ -2,12 +2,18 @@
 use Elliptic\EC;
 
 class Circular {
-    private $NAG_KEY = '';
-    private $NAG_URL = 'https://nag.circularlabs.io/NAG.php?cep=';
+    public  $version;
+    public  $lastError;
+    private $nagKey;
+    private $nagUrl;
     private $ec;
 
     public function __construct() {
-        $this->ec = new EC('secp256k1');
+        $this->version   = '1.0.7';
+        $this->lastError = NULL;
+        $this->nagKey    = '';
+        $this->nagUrl    = 'https://nag.circularlabs.io/NAG.php?cep=';
+        $this->ec        = new EC('secp256k1');
     }
 
     private function handleError($error) {
@@ -19,19 +25,19 @@ class Circular {
     }
 
     private function getFormattedTimestamp() {
-        $date = new DateTime();
+        $date = new DateTime("now", new DateTimeZone("UTC"));
         return $date->format('Y:m:d-H:i:s');
     }
 
     private function signMessage($message, $privateKey) {
-        $key = $this->ec->keyFromPrivate($privateKey, 'hex');
-        $msgHash = hash('sha256', $message);
+        $key       = $this->ec->keyFromPrivate($privateKey, 'hex');
+        $msgHash   = hash('sha256', $message);
         $signature = $key->sign($msgHash)->toDER('hex');
         return $signature;
     }
 
     private function verifySignature($publicKey, $message, $signature) {
-        $key = $this->ec->keyFromPublic($publicKey, 'hex');
+        $key     = $this->ec->keyFromPublic($publicKey, 'hex');
         $msgHash = hash('sha256', $message);
         return $key->verify($msgHash, $signature, 'hex');
     }
@@ -44,6 +50,10 @@ class Circular {
 
     private function stringToHex($str) {
         return bin2hex($str);
+    }
+
+    private function hexToString($hex) {
+        return pack("H*",bin2hex($hex));
     }
 
     private function hexFix($word) {
