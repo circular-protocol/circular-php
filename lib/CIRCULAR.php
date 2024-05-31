@@ -27,22 +27,22 @@ use Elliptic\EC;
 class Circular {
     public  $version;
     public  $lastError;
-    public  $nagKey;
-    public  $nagUrl;
+    public  $NAG_KEY;
+    public  $NAG_URL;
     private $ec;
 
 
 /*---------------------------------------------------------------------------
  | CLASS CONSTRUCT
  *---------------------------------------------------------------------------*/
-    public function __construct() {
-        $this->version   = '1.0.7';
-        $this->lastError = NULL;
-        $this->nagKey    = '';
-        $this->nagUrl    = 'https://nag.circularlabs.io/NAG.php?cep=';
-        $this->ec        = new EC('secp256k1');
-    }
-
+public function __construct() 
+{
+    $this->version   = '1.0.7';
+    $this->lastError = NULL;
+    $this->NAG_KEY   = '';
+    $this->NAG_URL   = 'https://nag.circularlabs.io/NAG.php?cep=';
+    $this->ec        = new EC('secp256k1');
+}
 
 /*---------------------------------------------------------------------------
  | HELPER FUNCTIONS
@@ -58,12 +58,12 @@ private function fetch($url, $data)
  */
 {
 $options = array(
-            'http'    => array(
-            'header'  => "Content-type: application/json\r\n",
-            'method'  => 'POST',
-            'content' => json_encode($data)
-            )
-          );
+     'http' => array(
+                         'header'  => "Content-type: application/json\r\n",
+                         'method'  => 'POST',
+                         'content' => json_encode($data)
+                    )
+    );
     $context  = stream_context_create($options);
     $result = file_get_contents(NAG_URL . 'Circular_CallContract_', false, $context);
 
@@ -78,7 +78,6 @@ private function handleError($error)
 /*
  | Variables    : object
  | Returns      : string
- | DB Tables    : N/A
  | Description  : Call the PHP error_log handler
  *
  */
@@ -212,24 +211,98 @@ private function getPublicKey($privateKey)
  | NAG FUNCTIONS
  *---------------------------------------------------------------------------*/
 
-public function setNAGKey($NAGKey) {
+/*_______________________________________________________________________*/
+public function setNAGKey($NAGKey) 
+/*
+ | Variables    : string
+ | Returns      : n/a
+ | Description  : Set the NAG_KEY
+ *
+ */
+{
     $this->NAG_KEY = $NAGKey;
 }
+/*_______________________________________________________________________*/
 
-public function setNAGURL($NURL='https://nag.circularlabs.io/NAG.php?cep=') {
+/*_______________________________________________________________________*/
+public function setNAGURL($NURL='https://nag.circularlabs.io/NAG.php?cep=') 
+/*
+ | Variables    : string
+ | Returns      : n/a
+ | Description  : Set the NAG_URL
+ *
+ */
+{
     $this->NAG_URL = $NURL;
 }
+/*_______________________________________________________________________*/
 
 
+/*---------------------------------------------------------------------------
+ | SMART CONTRACTS FUNCTIONS
+ *---------------------------------------------------------------------------*/
+/*_______________________________________________________________________*/
+public function TestContract($Blockchain, $From, $Project) 
+/*
+ | Variables    : string, string, string
+ | Returns      : JSON object or FALSE
+ | Description  : Test the execution of a smart contract project
+ *                Blockchain: Blockchain where the smart contract will be tested
+ *                From: Developer's wallet address
+ *                Project: Hyper Code Lighe Smart Contract Project
+ *
+ */
+{
+    $data = array(
+        "Blockchain" => $this->HexFix($Blockchain),
+        "From"       => $this->HexFix($From),
+        "Timestamp"  => $this->getFormattedTimestamp(),
+        "Project"    => $this->StringToHex($Project),
+        "Version"    => $this->version
+    );
+
+    return $this->fetch($this->NAG_URL . 'Circular_TestContract_', $data);
+}
+/*_______________________________________________________________________*/
+
+/*_______________________________________________________________________*/
+public function CallContract($Blockchain, $From, $Address, $Request) 
+/*
+ | Variables    : string, string, string, string
+ | Returns      : JSON object or FALSE
+ | Description  : Local Smart Contract Call
+ *                Blockchain: Blockchain where the Smart Contract is deployed
+ *                From: Caller wallet Address
+ *                Address: Smart Contract Address
+ *                Request: Smart Contract Local endpoint
+ *
+ */
+{
+    $data = array(
+        "Blockchain" => $this->HexFix($Blockchain),
+        "From"       => $this->HexFix($From),
+        "Address"    => $this->HexFix($Address),
+        "Request"    => $this->StringToHex($Request),
+        "Timestamp"  => $this->getFormattedTimestamp(),
+        "Version"    => $this->version
+    );
+
+    return $this->fetch($this->NAG_URL . 'Circular_CallContract_', $data);
+}
+/*_______________________________________________________________________*/
 
 
+/*---------------------------------------------------------------------------
+ | WALLET FUNCTIONS
+ *---------------------------------------------------------------------------*/
 
     public function getWallet($blockchain, $address) {
         $blockchain = $this->hexFix($blockchain);
         $address    = $this->hexFix($address);
         $data       = array(
                             "Blockchain" => $blockchain,
-                            "Address"    => $address
+                            "Address"    => $address,
+			    "Version"    => $this->version
                       );
         return $this->fetch($this->NAG_URL . 'Circular_GetWallet_', $data);
     }
@@ -243,8 +316,9 @@ public function setNAGURL($NURL='https://nag.circularlabs.io/NAG.php?cep=') {
         $nonce      = '0';
         $type       = 'C_TYPE_REGISTERWALLET';
         $payloadObj = array(
-                            "Action"     => "CP_REGISTERWALLET",
-                             "PublicKey" => $publicKey
+                            "Action"    => "CP_REGISTERWALLET",
+                            "PublicKey" => $publicKey,
+			    "Version"   => $this->version
                       );
         $jsonstr    = json_encode($payloadObj);
         $payload    = $this->stringToHex($jsonstr);
@@ -259,7 +333,8 @@ public function setNAGURL($NURL='https://nag.circularlabs.io/NAG.php?cep=') {
         $blockchain = $this->hexFix($blockchain);
         $data = array(
                       "Blockchain" => $blockchain,
-                      "AssetName"  => $name
+                      "AssetName"  => $name,
+                      "Version"    => $this->version
                      );
         return $this->fetch($this->NAG_URL . 'Circular_GetAsset_', $data);
     }
@@ -268,7 +343,8 @@ public function setNAGURL($NURL='https://nag.circularlabs.io/NAG.php?cep=') {
         $blockchain = $this->hexFix($blockchain);
         $data = array(
                       "Blockchain" => $blockchain,
-                      "AssetName"  => $name
+                      "AssetName"  => $name,
+                      "Version"    => $this->version
                      );
         return $this->fetch($this->NAG_URL . 'Circular_GetAssetSupply_', $data);
     }
@@ -276,8 +352,9 @@ public function setNAGURL($NURL='https://nag.circularlabs.io/NAG.php?cep=') {
     public function getBlock($blockchain, $num) {
         $blockchain = $this->hexFix($blockchain);
         $data = array(
-            "Blockchain" => $blockchain,
-            "BlockNumber" => $num
+            "Blockchain"  => $blockchain,
+            "BlockNumber" => $num,
+            "Version"     => $this->version
         );
         return $this->fetch($this->NAG_URL . 'Circular_GetBlock_', $data);
     }
@@ -295,9 +372,9 @@ public function sendTransaction($id, $from, $to, $timestamp, $type, $payload, $n
             "Payload"    => $payload,
             "Nonce"      => $nonce,
             "Signature"  => $signature,
-            "PublicKey"  => $publicKey,
             "Blockchain" => $blockchain,
-            "Type"       => $type
+            "Type"       => $type,
+            "Version"    => $this->version
         );
         $response = $this->fetch($this->NAG_URL . 'Circular_AddTransaction_', $data);
         return $response === false ? false : true;
