@@ -295,16 +295,6 @@ public function CallContract($Blockchain, $From, $Address, $Request)
 /*---------------------------------------------------------------------------
  | WALLET FUNCTIONS
  *---------------------------------------------------------------------------*/
-
-/*_______________________________________________________________________*/
-/*
- | Variables    :
- | Returns      :
- | Description  :
- *
- */
-/*_______________________________________________________________________*/
-
 /*_______________________________________________________________________*/
 public function checkWallet($blockchain, $address) 
 /*
@@ -363,6 +353,7 @@ public function getWalletBalance($blockchain, $address, $asset)
     $data       = array(
                         "Blockchain" => $blockchain,
                         "Address"    => $address,
+                        "asset"      => $asset,
                         "Version"    => $this->version
                   );
     return $this->fetch($this->NAG_URL . 'Circular_GetWalletBalance_', $data);
@@ -443,7 +434,7 @@ public function GetDomain($blockchain, $name)
     $blockchain = $this->hexFix($blockchain);
     $data = array(
                   "Blockchain" => $blockchain,
-                  "AssetName"  => $name,
+                  "Domain"     => $name,
                   "Version"    => $this->version
                  );
     return $this->fetch($this->NAG_URL . 'Circular_ResolveDomain_', $data);
@@ -491,7 +482,6 @@ public function getAssetList($blockchain)
 }
 /*_______________________________________________________________________*/
 
-
 /*_______________________________________________________________________*/
 public function getAssetSupply($blockchain, $name) 
 /*
@@ -513,15 +503,42 @@ public function getAssetSupply($blockchain, $name)
 }
 /*_______________________________________________________________________*/
 
-    public function getBlock($blockchain, $num) {
-        $blockchain = $this->hexFix($blockchain);
-        $data = array(
-            "Blockchain"  => $blockchain,
-            "BlockNumber" => $num,
-            "Version"     => $this->version
-        );
-        return $this->fetch($this->NAG_URL . 'Circular_GetBlock_', $data);
-    }
+/*---------------------------------------------------------------------------
+ | VOUCHERS MANAGEMENT FUNCTIONS
+ *---------------------------------------------------------------------------*/
+/*_______________________________________________________________________*/
+public function getVoucher($blockchain, $code)
+/*
+ | Variables    : string, string
+ | Returns      : JSON
+ | Description  : Retrieves an existing Voucher
+ *                Blockchain: blockchain where the voucher was minted
+ *                Code: voucher code
+ *
+ */
+{
+    $blockchain = $this->hexFix($blockchain);
+    $data = array(
+                  "Blockchain" => $blockchain,
+                  "Code"       => $code,
+                  "Version"    => $this->version
+                 );
+    return $this->fetch($this->NAG_URL . 'Circular_GetVoucher_', $data);
+}
+/*_______________________________________________________________________*/
+
+
+
+public function getBlock($blockchain, $num) 
+{
+    $blockchain = $this->hexFix($blockchain);
+    $data = array(
+        "Blockchain"  => $blockchain,
+        "BlockNumber" => $num,
+        "Version"     => $this->version
+    );
+    return $this->fetch($this->NAG_URL . 'Circular_GetBlock_', $data);
+}
 
 public function sendTransaction($id, $from, $to, $timestamp, $type, $payload, $nonce, $publicKey, $signature, $blockchain) {
     $from = $this->hexFix($from);
