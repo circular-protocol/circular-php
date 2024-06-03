@@ -529,7 +529,7 @@ public function getVoucher($blockchain, $code)
 
 
 /*---------------------------------------------------------------------------
- | BLOCKS MANAGEMENT FUNCTIONS
+ | BLOCK MANAGEMENT FUNCTIONS
  *---------------------------------------------------------------------------*/
 
 public function getBlockRange($blockchain, $start, $end) 
@@ -567,6 +567,30 @@ public function getBlockCount($blockchain) {
 }
 
 /*---------------------------------------------------------------------------
+ | ANALYTICS FUNCTIONS
+ *---------------------------------------------------------------------------*/
+public function getAnalytics($blockchain) 
+{
+    $blockchain = $this->hexFix($blockchain);
+    $data = [
+        "Blockchain" => $blockchain,
+        "Version"    => $this->version
+    ];
+
+    return $this->fetch($this->NAG_URL . 'Circular_GetAnalytics_', $data);
+}
+
+/*---------------------------------------------------------------------------
+ | BLOCKCHAIN FUNCTIONS
+ *---------------------------------------------------------------------------*/
+public function getBlockchains() 
+{
+    $data = []; // Empty array since no data is needed
+
+    return $this->fetch($this->NAG_URL . 'Circular_GetBlockchains_', $data);
+}
+
+/*---------------------------------------------------------------------------
  | TRANSACTIONS MANAGEMENT FUNCTIONS
  *---------------------------------------------------------------------------*/
 
@@ -589,10 +613,10 @@ public function getTransactionByID($blockchain, $txID, $start, $end)
     $txID = $this->hexFix($txID);
     $data = [
         "Blockchain" => $blockchain,
-        "ID" => $txID,
-        "Start" => strval($start),
-        "End" => strval($end),
-        "Version" => $this->version
+        "ID"         => $txID,
+        "Start"      => strval($start),
+        "End"        => strval($end),
+        "Version"    => $this->version
     ];
 
     return $this->fetch($this->NAG_URL . 'Circular_GetTransactionbyID_', $data);
