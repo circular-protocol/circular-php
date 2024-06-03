@@ -425,6 +425,9 @@ public function registerWallet($blockchain, $privateKey)
 }
 /*_______________________________________________________________________*/
 
+/*---------------------------------------------------------------------------
+ | DOMAIN MANAGEMENT FUNCTIONS
+ *---------------------------------------------------------------------------*/
 /*_______________________________________________________________________*/
 public function GetDomain($blockchain, $name)
 /*
@@ -447,7 +450,9 @@ public function GetDomain($blockchain, $name)
 }
 /*_______________________________________________________________________*/
 
-
+/*---------------------------------------------------------------------------
+ | PARAMETRIC ASSETS MANAGEMENT FUNCTIONS
+ *---------------------------------------------------------------------------*/
 /*_______________________________________________________________________*/
 public function getAsset($blockchain, $name) 
 /*
@@ -466,6 +471,25 @@ public function getAsset($blockchain, $name)
     return $this->fetch($this->NAG_URL . 'Circular_GetAsset_', $data);
 }
 /*_______________________________________________________________________*/
+
+/*_______________________________________________________________________*/
+public function getAssetList($blockchain)
+/*
+ | Variables    :
+ | Returns      :
+ | Description  :
+ *
+ */
+{
+    $blockchain = $this->hexFix($blockchain);
+    $data = array(
+                  "Blockchain" => $blockchain,
+                  "Version"    => $this->version
+                 );
+    return $this->fetch($this->NAG_URL . 'Circular_GetAssetList_', $data);
+}
+/*_______________________________________________________________________*/
+
 
     public function getAssetSupply($blockchain, $name) {
         $blockchain = $this->hexFix($blockchain);
