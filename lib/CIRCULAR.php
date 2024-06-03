@@ -346,7 +346,39 @@ public function getWallet($blockchain, $address)
 }
 /*_______________________________________________________________________*/
 
+/*_______________________________________________________________________*/
+public function GetLatestTransactions($blockchain, $address)
+/*
+ | Variables    : string, string
+ | Returns      : JSON
+ | Description  : Retrieves Recent Transactions from Wallet on $blockchain with $address
+ *
+ */
+{
+    $blockchain = $this->hexFix($blockchain);
+    $address    = $this->hexFix($address);
+    $data       = array(
+                        "Blockchain" => $blockchain,
+                        "Address"    => $address,
+                        "Version"    => $this->version
+                  );
+    return $this->fetch($this->NAG_URL . 'Circular_GetLatestTransactions_', $data);
+}
+/*_______________________________________________________________________*/
+
+/*_______________________________________________________________________*/
 public function registerWallet($blockchain, $privateKey) 
+/*
+ | Variables    : string, string
+ | Returns      : string
+ | Description  : Register a wallet on a desired blockchain.
+ *                The same wallet can be registered on multiple blockchains
+ *                Blockchain: Blockchain where the wallet will be registered
+ *                PublicKey: Wallet PublicKey
+ *
+ *                Note: Without registration on the blockchain the wallet will not be reachable
+ *
+ */
 {
     $blockchain = $this->hexFix($blockchain);
     $privateKey = $this->hexFix($privateKey);
@@ -365,9 +397,10 @@ public function registerWallet($blockchain, $privateKey)
     $timestamp  = $this->getFormattedTimestamp();
     $id         = hash('sha256', $from . $to . $payload . $nonce . $timestamp);
     $signature  = $this->signMessage($id, $privateKey);
-    $res        = $this->sendTransaction($id, $from, $to, $timestamp, $type, $payload, $nonce, $publicKey, $signature, $blockchain);
-    return $res;
+    $result     = $this->sendTransaction($id, $from, $to, $timestamp, $type, $payload, $nonce, $publicKey, $signature, $blockchain);
+    return $result;
 }
+/*_______________________________________________________________________*/
 
     public function getAsset($blockchain, $name) {
         $blockchain = $this->hexFix($blockchain);
