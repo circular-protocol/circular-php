@@ -426,6 +426,29 @@ public function registerWallet($blockchain, $privateKey)
 /*_______________________________________________________________________*/
 
 /*_______________________________________________________________________*/
+public function GetDomain($blockchain, $name)
+/*
+ | Variables    : string, string
+ | Returns      : JSON
+ | Description  : Resolves the domain name returning the wallet address associated to the domain name
+ *                A single wallet can have multiple domains associations
+ *                Blockchain: Blockchain where the domain and wallet are registered
+ *                Name: Domain Name
+ *
+ */
+{
+    $blockchain = $this->hexFix($blockchain);
+    $data = array(
+                  "Blockchain" => $blockchain,
+                  "AssetName"  => $name,
+                  "Version"    => $this->version
+                 );
+    return $this->fetch($this->NAG_URL . 'Circular_ResolveDomain_', $data);
+}
+/*_______________________________________________________________________*/
+
+
+/*_______________________________________________________________________*/
 public function getAsset($blockchain, $name) 
 /*
  | Variables    :
