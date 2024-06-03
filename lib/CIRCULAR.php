@@ -560,29 +560,111 @@ public function getBlockCount($blockchain) {
     $blockchain = $this->hexFix($blockchain);
     $data = [
         "Blockchain" => $blockchain,
-        "Version" => $this->version
+        "Version"    => $this->version
     ];
 
     return $this->fetch($this->NAG_URL . 'Circular_GetBlockHeight_', $data);
 }
 
-public function sendTransaction($id, $from, $to, $timestamp, $type, $payload, $nonce, $publicKey, $signature, $blockchain) {
+/*---------------------------------------------------------------------------
+ | TRANSACTIONS MANAGEMENT FUNCTIONS
+ *---------------------------------------------------------------------------*/
+
+public function getPendingTransaction($blockchain, $txID) 
+{
+    $blockchain = $this->hexFix($blockchain);
+    $txID = $this->hexFix($txID);
+    $data = [
+        "Blockchain" => $blockchain,
+        "ID"         => $txID,
+        "Version"    => $this->version
+    ];
+
+    return $this->fetch($this->NAG_URL . 'Circular_GetPendingTransaction_', $data);
+}
+
+public function getTransactionByID($blockchain, $txID, $start, $end) 
+{
+    $blockchain = $this->hexFix($blockchain);
+    $txID = $this->hexFix($txID);
+    $data = [
+        "Blockchain" => $blockchain,
+        "ID" => $txID,
+        "Start" => strval($start),
+        "End" => strval($end),
+        "Version" => $this->version
+    ];
+
+    return $this->fetch($this->NAG_URL . 'Circular_GetTransactionbyID_', $data);
+}
+
+public function getTransactionByNode($blockchain, $nodeID, $start, $end) 
+{
+    $blockchain = $this->hexFix($blockchain);
+    $nodeID = $this->hexFix($nodeID);
+    $data = [
+        "Blockchain" => $blockchain,
+        "NodeID"     => $nodeID,
+        "Start"      => strval($start),
+        "End"        => strval($end),
+        "Version"    => $this->version
+    ];
+
+    return $this->fetch($this->NAG_URL . 'Circular_GetTransactionbyNode_', $data);
+}
+
+public function getTransactionByAddress($blockchain, $address, $start, $end) 
+{
+    $blockchain = $this->hexFix($blockchain);
+    $address = $this->hexFix($address);
+    $data = [
+        "Blockchain" => $blockchain,
+        "Address"    => $address,
+        "Start"      => strval($start),
+        "End"        => strval($end),
+        "Version"    => $this->version
+    ];
+
+    return $this->fetch($this->NAG_URL . 'Circular_GetTransactionbyAddress_', $data);
+}
+
+public function getTransactionByDate($blockchain, $address, $startDate, $endDate) 
+{
+    $blockchain = $this->hexFix($blockchain);
+    $address = $this->hexFix($address);
+    $data = [
+        "Blockchain" => $blockchain,
+        "Address"    => $address,
+        "StartDate"  => $startDate,
+        "EndDate"    => $endDate,
+        "Version"    => $this->version
+    ];
+
+    return $this->fetch($this->NAG_URL . 'Circular_GetTransactionbyDate_', $data);
+}
+
+public function sendTransaction($id, $from, $to, $timestamp, $type, $payload, $nonce, $signature, $blockchain) 
+{
     $from = $this->hexFix($from);
     $to = $this->hexFix($to);
-    $publicKey = $this->hexFix($publicKey);
-    $data = array(
+    $id = $this->hexFix($id);
+    $payload = $this->hexFix($payload);
+    $signature = $this->hexFix($signature);
+    $blockchain = $this->hexFix($blockchain);
+    $data = [
         "ID"         => $id,
         "From"       => $from,
         "To"         => $to,
         "Timestamp"  => $timestamp,
-        "Payload"    => $payload,
-        "Nonce"      => $nonce,
+        "Payload"    => strval($payload),
+        "Nonce"      => strval($nonce),
         "Signature"  => $signature,
         "Blockchain" => $blockchain,
         "Type"       => $type,
         "Version"    => $this->version
-    );
-    return $response = $this->fetch($this->NAG_URL . 'Circular_AddTransaction_', $data);
+    ];
+
+    return $this->fetch($this->NAG_URL . 'Circular_AddTransaction_', $data);
 }
 
 } // end of class: 
