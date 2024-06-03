@@ -477,7 +477,8 @@ public function getAssetList($blockchain)
 /*
  | Variables    :
  | Returns      :
- | Description  :
+ | Description  : Retrieves the list of all assets minted on a specific blockchain
+ *                Blockchain: Blockchin where to request the list
  *
  */
 {
@@ -491,15 +492,26 @@ public function getAssetList($blockchain)
 /*_______________________________________________________________________*/
 
 
-    public function getAssetSupply($blockchain, $name) {
-        $blockchain = $this->hexFix($blockchain);
-        $data = array(
-                      "Blockchain" => $blockchain,
-                      "AssetName"  => $name,
-                      "Version"    => $this->version
-                     );
-        return $this->fetch($this->NAG_URL . 'Circular_GetAssetSupply_', $data);
-    }
+/*_______________________________________________________________________*/
+public function getAssetSupply($blockchain, $name) 
+/*
+ | Variables    : string, string
+ | Returns      : JSON
+ | Description  : Retrieve The total, circulating and residual supply of a specified asset
+ *                Blockchain: Blockchain where the asset is minted
+ *                Name: Asset Name (example 'CIRX')
+ *
+ */
+{
+    $blockchain = $this->hexFix($blockchain);
+    $data = array(
+                  "Blockchain" => $blockchain,
+                  "AssetName"  => $name,
+                  "Version"    => $this->version
+                 );
+    return $this->fetch($this->NAG_URL . 'Circular_GetAssetSupply_', $data);
+}
+/*_______________________________________________________________________*/
 
     public function getBlock($blockchain, $num) {
         $blockchain = $this->hexFix($blockchain);
