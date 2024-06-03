@@ -296,38 +296,78 @@ public function CallContract($Blockchain, $From, $Address, $Request)
  | WALLET FUNCTIONS
  *---------------------------------------------------------------------------*/
 
-    public function getWallet($blockchain, $address) {
-        $blockchain = $this->hexFix($blockchain);
-        $address    = $this->hexFix($address);
-        $data       = array(
-                            "Blockchain" => $blockchain,
-                            "Address"    => $address,
-			    "Version"    => $this->version
-                      );
-        return $this->fetch($this->NAG_URL . 'Circular_GetWallet_', $data);
-    }
+/*_______________________________________________________________________*/
+/*
+ | Variables    :
+ | Returns      :
+ | Description  :
+ *
+ */
+/*_______________________________________________________________________*/
 
-    public function registerWallet($blockchain, $privateKey) {
-        $blockchain = $this->hexFix($blockchain);
-        $privateKey = $this->hexFix($privateKey);
-        $publicKey  = $this->getPublicKey($privateKey);
-        $from       = hash('sha256', $publicKey);
-        $to         = $from;
-        $nonce      = '0';
-        $type       = 'C_TYPE_REGISTERWALLET';
-        $payloadObj = array(
-                            "Action"    => "CP_REGISTERWALLET",
-                            "PublicKey" => $publicKey,
-			    "Version"   => $this->version
-                      );
-        $jsonstr    = json_encode($payloadObj);
-        $payload    = $this->stringToHex($jsonstr);
-        $timestamp  = $this->getFormattedTimestamp();
-        $id         = hash('sha256', $from . $to . $payload . $nonce . $timestamp);
-        $signature  = $this->signMessage($id, $privateKey);
-        $res        = $this->sendTransaction($id, $from, $to, $timestamp, $type, $payload, $nonce, $publicKey, $signature, $blockchain);
-        return $res;
-    }
+/*_______________________________________________________________________*/
+public function checkWallet($blockchain, $address) 
+/*
+ | Variables    : string, string
+ | Returns      : JSON 
+ | Description  : Check if the wallet with this $address exists on this $blockchain
+ *
+ */
+
+{
+    $blockchain = $this->hexFix($blockchain);
+    $address    = $this->hexFix($address);
+    $data       = array(
+                        "Blockchain" => $blockchain,
+                        "Address"    => $address,
+                        "Version"    => $this->version
+                  );
+    return $this->fetch($this->NAG_URL . 'Circular_CheckWallet_', $data);
+}
+/*_______________________________________________________________________*/
+
+/*_______________________________________________________________________*/
+public function getWallet($blockchain, $address) 
+/*
+ | Variables    : string, string
+ | Returns      : JSON 
+ | Description  : Retrieves a Wallet from $blockchain with $address
+ *
+ */
+{
+    $blockchain = $this->hexFix($blockchain);
+    $address    = $this->hexFix($address);
+    $data       = array(
+                        "Blockchain" => $blockchain,
+                        "Address"    => $address,
+                        "Version"    => $this->version
+                  );
+    return $this->fetch($this->NAG_URL . 'Circular_GetWallet_', $data);
+}
+/*_______________________________________________________________________*/
+
+public function registerWallet($blockchain, $privateKey) 
+{
+    $blockchain = $this->hexFix($blockchain);
+    $privateKey = $this->hexFix($privateKey);
+    $publicKey  = $this->getPublicKey($privateKey);
+    $from       = hash('sha256', $publicKey);
+    $to         = $from;
+    $nonce      = '0';
+    $type       = 'C_TYPE_REGISTERWALLET';
+    $payloadObj = array(
+                        "Action"    => "CP_REGISTERWALLET",
+                        "PublicKey" => $publicKey,
+                        "Version"   => $this->version
+                  );
+    $jsonstr    = json_encode($payloadObj);
+    $payload    = $this->stringToHex($jsonstr);
+    $timestamp  = $this->getFormattedTimestamp();
+    $id         = hash('sha256', $from . $to . $payload . $nonce . $timestamp);
+    $signature  = $this->signMessage($id, $privateKey);
+    $res        = $this->sendTransaction($id, $from, $to, $timestamp, $type, $payload, $nonce, $publicKey, $signature, $blockchain);
+    return $res;
+}
 
     public function getAsset($blockchain, $name) {
         $blockchain = $this->hexFix($blockchain);
