@@ -518,26 +518,52 @@ public function getVoucher($blockchain, $code)
  */
 {
     $blockchain = $this->hexFix($blockchain);
-    $data = array(
+    $data = [
                   "Blockchain" => $blockchain,
-                  "Code"       => $code,
+                  "Code"       => strval($code),
                   "Version"    => $this->version
-                 );
+    ];   
     return $this->fetch($this->NAG_URL . 'Circular_GetVoucher_', $data);
 }
 /*_______________________________________________________________________*/
 
 
+/*---------------------------------------------------------------------------
+ | BLOCKS MANAGEMENT FUNCTIONS
+ *---------------------------------------------------------------------------*/
 
-public function getBlock($blockchain, $num) 
+public function getBlockRange($blockchain, $start, $end) 
 {
     $blockchain = $this->hexFix($blockchain);
-    $data = array(
+    $data = [
+        "Blockchain" => $blockchain,
+        "Start"      => strval($start),
+        "End"        => strval($end),
+        "Version"    => $this->version
+    ];
+
+    return $this->fetch($this->NAG_URL . 'Circular_GetBlockRange_', $data);
+}
+
+public function getBlock($blockchain, $num) {
+    $blockchain = $this->hexFix($blockchain);
+    $data = [
         "Blockchain"  => $blockchain,
-        "BlockNumber" => $num,
+        "BlockNumber" => strval($num),
         "Version"     => $this->version
-    );
+    ];
+
     return $this->fetch($this->NAG_URL . 'Circular_GetBlock_', $data);
+}
+
+public function getBlockCount($blockchain) {
+    $blockchain = $this->hexFix($blockchain);
+    $data = [
+        "Blockchain" => $blockchain,
+        "Version" => $this->version
+    ];
+
+    return $this->fetch($this->NAG_URL . 'Circular_GetBlockHeight_', $data);
 }
 
 public function sendTransaction($id, $from, $to, $timestamp, $type, $payload, $nonce, $publicKey, $signature, $blockchain) {
