@@ -347,6 +347,29 @@ public function getWallet($blockchain, $address)
 /*_______________________________________________________________________*/
 
 /*_______________________________________________________________________*/
+public function getWalletBalance($blockchain, $address, $asset)
+/*
+ | Variables    : string, string, string
+ | Returns      : JSON
+ | Description  : Retrieves the balance of a specified asset in a Wallet
+ *                Blockchain: Blockchain where the wallet is registered
+ *                Address: Wallet address
+ *                Asset: Asset Name (example 'CIRX')
+ *
+ */
+{
+    $blockchain = $this->hexFix($blockchain);
+    $address    = $this->hexFix($address);
+    $data       = array(
+                        "Blockchain" => $blockchain,
+                        "Address"    => $address,
+                        "Version"    => $this->version
+                  );
+    return $this->fetch($this->NAG_URL . 'Circular_GetWalletBalance_', $data);
+}
+/*_______________________________________________________________________*/
+
+/*_______________________________________________________________________*/
 public function GetLatestTransactions($blockchain, $address)
 /*
  | Variables    : string, string
