@@ -370,7 +370,7 @@ public function getWalletBalance($blockchain, $address, $asset)
 /*_______________________________________________________________________*/
 
 /*_______________________________________________________________________*/
-public function GetLatestTransactions($blockchain, $address)
+public function getLatestTransactions($blockchain, $address)
 /*
  | Variables    : string, string
  | Returns      : JSON
@@ -425,15 +425,24 @@ public function registerWallet($blockchain, $privateKey)
 }
 /*_______________________________________________________________________*/
 
-    public function getAsset($blockchain, $name) {
-        $blockchain = $this->hexFix($blockchain);
-        $data = array(
-                      "Blockchain" => $blockchain,
-                      "AssetName"  => $name,
-                      "Version"    => $this->version
-                     );
-        return $this->fetch($this->NAG_URL . 'Circular_GetAsset_', $data);
-    }
+/*_______________________________________________________________________*/
+public function getAsset($blockchain, $name) 
+/*
+ | Variables    :
+ | Returns      :
+ | Description  :
+ *
+ */
+{
+    $blockchain = $this->hexFix($blockchain);
+    $data = array(
+                  "Blockchain" => $blockchain,
+                  "AssetName"  => $name,
+                  "Version"    => $this->version
+                 );
+    return $this->fetch($this->NAG_URL . 'Circular_GetAsset_', $data);
+}
+/*_______________________________________________________________________*/
 
     public function getAssetSupply($blockchain, $name) {
         $blockchain = $this->hexFix($blockchain);
@@ -456,28 +465,22 @@ public function registerWallet($blockchain, $privateKey)
     }
 
 public function sendTransaction($id, $from, $to, $timestamp, $type, $payload, $nonce, $publicKey, $signature, $blockchain) {
-    try {
-        $from = $this->hexFix($from);
-        $to = $this->hexFix($to);
-        $publicKey = $this->hexFix($publicKey);
-        $data = array(
-            "ID"         => $id,
-            "From"       => $from,
-            "To"         => $to,
-            "Timestamp"  => $timestamp,
-            "Payload"    => $payload,
-            "Nonce"      => $nonce,
-            "Signature"  => $signature,
-            "Blockchain" => $blockchain,
-            "Type"       => $type,
-            "Version"    => $this->version
-        );
-        $response = $this->fetch($this->NAG_URL . 'Circular_AddTransaction_', $data);
-        return $response === false ? false : true;
-    } catch (Exception $e) {
-        $this->handleError($e);
-        return false;
-    }
+    $from = $this->hexFix($from);
+    $to = $this->hexFix($to);
+    $publicKey = $this->hexFix($publicKey);
+    $data = array(
+        "ID"         => $id,
+        "From"       => $from,
+        "To"         => $to,
+        "Timestamp"  => $timestamp,
+        "Payload"    => $payload,
+        "Nonce"      => $nonce,
+        "Signature"  => $signature,
+        "Blockchain" => $blockchain,
+        "Type"       => $type,
+        "Version"    => $this->version
+    );
+    return $response = $this->fetch($this->NAG_URL . 'Circular_AddTransaction_', $data);
 }
 
 } // end of class: 
