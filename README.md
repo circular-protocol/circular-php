@@ -22,7 +22,7 @@ This class requires the following dependencies:
 First, you need to install Composer and then run the following command to install the Elliptic library:
 
 ```bash
-composer require elliptic/php
+composer require simplito/elliptic-php
 ```
 
 ## Usage
@@ -44,11 +44,12 @@ Example of how to use the Circular class:
 
 ```php
 <?php
-// Include the Circular class from the lib directory
+
+// Include the circular sdk
+require_once __DIR__ . '/vendor/autoload.php'; 
 require_once 'lib/CIRCULAR.php';
 
-// Create a new instance of the Circular class
-$circular = new \lib\Circular();
+$circular = new Circular();
 
 // Set the NAG key and URL
 $circular->setNAGKey('your_nag_key');
@@ -56,26 +57,25 @@ $circular->setNAGURL('https://nag.circularlabs.io/NAG.php?cep=');
 
 // Register a wallet
 $blockchain = 'your_blockchain';
-$privateKey = 'your_private_key';
-$response = $circular->registerWallet($blockchain, $privateKey);
+$publicKey = 'your_public_key';
+$response = $circular->registerWallet($blockchain, $publicKey);
 
-// Check the response
-if ($response) {
+ if ($response) {
     echo "Wallet registered successfully.\n";
 } else {
     echo "Failed to register wallet.\n";
 }
 
+print_r($response);
+
 // Get wallet information
 $address = 'your_address';
 $walletInfo = $circular->getWallet($blockchain, $address);
 
-// Print the wallet information
 echo "Wallet Information: \n";
 print_r($walletInfo);
-?>
 ```
-Note: Replace 'your_nag_key', 'your_blockchain', 'your_private_key', and 'your_address' with your actual values.
+Note: Replace 'your_nag_key', 'your_blockchain', 'your_public_key', and 'your_address' with your actual values.
 
 
 ## Disclaimer
