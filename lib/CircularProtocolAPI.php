@@ -3,22 +3,25 @@
  | HEADER
  |
  | File_Name       : CIRCULAR.php
- | Author          : Eric D. Wade ;., (nandesu@gmail.com)
- | Collaborators   : Danny De Novi (dannydenovi29@gmail.com)
+ | Author          : Danny De Novi (dannydenovi29@gmail.com), Eric D. Wade ;., (nandesu@gmail.com)
+ | Collaborators   : 
  | Date            : 
  | Description     : This is the PHP port of circular protocol SDK
  *
  *
  *
- |  Modified Date       : 28/09/2024
+ |  Modified Date       : 10/10/2024
  |  Last Modified By    : Danny De Novi
- |  Modification Notes  : Fuxed send transaction and wallet registration methods
+ |  Modification Notes  : Namespace Added
  *
  *
  *---------------------------------------------------------------------------*/
 /*---------------------------------------------------------------------------
  | INCLUDES
  *---------------------------------------------------------------------------*/
+
+namespace CircularProtocol\Api;
+
 use Elliptic\EC;
 use Elliptic\Utils;
 
@@ -70,7 +73,7 @@ $options = array(
     $context  = stream_context_create($options);
     $result = file_get_contents($url, false, $context);
 
-    if ($result === FALSE) { throw new Exception('Network response was not ok'); }
+    if ($result === FALSE) { throw new \Exception('Network response was not ok'); }
 
     return json_decode($result);
 }
@@ -90,7 +93,7 @@ private function handleError($error)
 /*_______________________________________________________________________*/
 
 /*_______________________________________________________________________*/
-private function padNumber($num)
+public function padNumber($num)
 /*
  | Variables    : int
  | Returns      : int
@@ -103,7 +106,7 @@ private function padNumber($num)
 /*_______________________________________________________________________*/
 
 /*_______________________________________________________________________*/
-private function getFormattedTimestamp() 
+public function getFormattedTimestamp() 
 /*
  | Variables    : n/a
  | Returns      : string
@@ -111,14 +114,14 @@ private function getFormattedTimestamp()
  *
  */
 {
-    $date = new DateTime("now", new DateTimeZone("UTC"));
+    $date = new \DateTime("now", new \DateTimeZone("UTC"));
     return $date->format('Y:m:d-H:i:s');
 }
 /*_______________________________________________________________________*/
 
 
 /*_______________________________________________________________________*/
-private function stringToHex($str) 
+public function stringToHex($str) 
 /*
  | Variables    : string
  | Returns      : string
@@ -131,7 +134,7 @@ private function stringToHex($str)
 /*_______________________________________________________________________*/
 
 /*_______________________________________________________________________*/
-private function hexToString($hex) 
+public function hexToString($hex) 
 /*
  | Variables    : string
  | Returns      : string
@@ -144,7 +147,7 @@ private function hexToString($hex)
 /*_______________________________________________________________________*/
 
 /*_______________________________________________________________________*/
-private function hexFix($word) 
+public function hexFix($word) 
 /*
  | Variables    : string
  | Returns      : string
@@ -162,7 +165,7 @@ private function hexFix($word)
  *---------------------------------------------------------------------------*/
 
 /*_______________________________________________________________________*/
-private function signMessage($message, $privateKey) 
+public function signMessage($message, $privateKey) 
 /*
  | Variables    : string, string
  | Returns      : string
@@ -181,7 +184,7 @@ private function signMessage($message, $privateKey)
 /*_______________________________________________________________________*/
 
 /*_______________________________________________________________________*/
-private function verifySignature($publicKey, $message, $signature) 
+public function verifySignature($publicKey, $message, $signature) 
 /*
  | Variables    : string, string, string
  | Returns      : string
@@ -198,7 +201,7 @@ private function verifySignature($publicKey, $message, $signature)
 
 
 /*_______________________________________________________________________*/
-private function getPublicKey($privateKey) 
+public function getPublicKey($privateKey) 
 /*
  | Variables    : string
  | Returns      : string
@@ -755,7 +758,7 @@ public function getTransactionOutcome($blockchain, $txID, $timeoutSec)
 
         while (true) {
             $elapsedTime = time() - $startTime;
-            if ($elapsedTime > $timeout) { throw new Exception('Timeout exceeded'); }
+            if ($elapsedTime > $timeout) { throw new \Exception('Timeout exceeded'); }
 
             $transactionData = $this->getTransactionByID($blockchain, $txID, 0, 10);
 	    if ($transactionData && $transactionData['Result'] === 200 && 
