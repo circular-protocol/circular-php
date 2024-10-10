@@ -6,7 +6,7 @@ The `Circular` class is a PHP implementation for interacting with the Circular L
 
 This class requires the following dependencies:
 
-- PHP 7.0 or higher
+- PHP 8.0 or higher
 - Composer
 - Elliptic PHP library
 
@@ -17,7 +17,7 @@ This class requires the following dependencies:
     * The fetch method in this PHP class does not behave exactly like the JavaScript fetch function especially regarding error handling.
       -- Consider replacing it with a more robust solution like Guzzle or CURL in a production environment.
 
-## Installation
+## Installation via Repository
 
 First, you need to install Composer and then run the following command to install the Elliptic library:
 
