@@ -1,4 +1,4 @@
-# Circular PHP Class
+# Circular Protocol PHP API
 
 The `CircularProtocolAPI` class is a PHP implementation for interacting with the Circular Labs blockchain. It provides methods for performing various operations such as fetching wallet information, registering a wallet, fetching asset information, and sending transactions.
 
@@ -10,12 +10,11 @@ This class requires the following dependencies:
 - Composer
 - Elliptic PHP library
 
-## CAVEATS
+## Installation via Composer
 
-* Please note the following:
-    * Error handling is very simplistic and should be tailored to your specific needs.
-    * The fetch method in this PHP class does not behave exactly like the JavaScript fetch function especially regarding error handling.
-      -- Consider replacing it with a more robust solution like Guzzle or CURL in a production environment.
+```bash
+composer require circular-protocol/circular-protocol-api
+```
 
 ## Installation via Repository
 
@@ -25,58 +24,22 @@ First, you need to install Composer and then run the following command to instal
 composer require simplito/elliptic-php
 ```
 
-## Usage
+## Docs
 
-Description of the methods available in the Circular class:
+Read the docs on [GitBook](https://circular-protocol.gitbook.io/circular-sdk/api-docs/php)
 
-- `__construct()`: Initializes the elliptic curve cryptography (ECC) object.
-- `setNAGKey($NAGKey)`: Sets the NAG key.
-- `setNAGURL($NURL)`: Sets the NAG URL.
-- `getWallet($blockchain, $address)`: Fetches the wallet information for a given blockchain and address.
-- `registerWallet($blockchain, $privateKey)`: Registers a wallet on a given blockchain using a private key.
-- `getAsset($blockchain, $name)`: Fetches asset information for a given blockchain and asset name.
-- `getAssetSupply($blockchain, $name)`: Fetches the supply of a given asset on a specific blockchain.
-- `getBlock($blockchain, $num)`: Fetches block information for a given blockchain and block number.
-- `sendTransaction($id, $from, $to, $timestamp, $type, $payload, $nonce, $publicKey, $signature, $blockchain)`: Sends a transaction on a given blockchain.
+## CAVEATS
 
-## Example
-Example of how to use the Circular class:
+* Please note the following:
+    * Error handling is very simplistic and should be tailored to your specific needs.
+    * The fetch method in this PHP class does not behave exactly like the JavaScript fetch function especially regarding error handling.
+      -- Consider replacing it with a more robust solution like Guzzle or CURL in a production environment.
 
-```php
-<?php
+## Useful Links
 
-// Include the circular sdk
-require_once __DIR__ . '/vendor/autoload.php'; 
-require_once 'lib/CIRCULAR.php';
-
-$circular = new CircularProtocolAPI();
-
-// Set the NAG key and URL
-$circular->setNAGKey('your_nag_key');
-$circular->setNAGURL('https://nag.circularlabs.io/NAG.php?cep=');
-
-// Register a wallet
-$blockchain = 'your_blockchain';
-$publicKey = 'your_public_key';
-$response = $circular->registerWallet($blockchain, $publicKey);
-
- if ($response) {
-    echo "Wallet registered successfully.\n";
-} else {
-    echo "Failed to register wallet.\n";
-}
-
-print_r($response);
-
-// Get wallet information
-$address = 'your_address';
-$walletInfo = $circular->getWallet($blockchain, $address);
-
-echo "Wallet Information: \n";
-print_r($walletInfo);
-```
-Note: Replace 'your_nag_key', 'your_blockchain', 'your_public_key', and 'your_address' with your actual values.
-
+- [Documentation](https://circular-protocol.gitbook.io/circular-sdk/api-docs/php)
+- [Packagist Repository](https://packagist.org/packages/circular-protocol/circular-protocol-api)
+- [GitHub](https://github.com/circular-protocol/circular-php)
 
 ## Disclaimer
 
