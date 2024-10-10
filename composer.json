@@ -1,0 +1,24 @@
+{
+    "name": "circular-protocol/circular-protocol-api",
+    "description": "Official Circular Protocol's blockchain PHP API.",
+    "require": {
+        "php": ">=8.0",
+        "simplito/elliptic-php": "^1.0.12"
+    },
+    "license": "MIT",
+    "autoload": {
+        "psr-4": {
+            "CircularProtocol\\Api\\": "lib/"
+        }
+    },
+    "authors": [
+        {
+            "name": "Danny De Novi",
+            "email": "dannydenovi29@gmail.com"
+        },
+        {
+          "name": "Eric D. Wade",
+          "email": "nandesu@gmail.com"
+        }
+    ]
+}
