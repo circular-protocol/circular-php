@@ -49,7 +49,7 @@ Example of how to use the Circular class:
 require_once __DIR__ . '/vendor/autoload.php'; 
 require_once 'lib/CIRCULAR.php';
 
-$circular = new Circular();
+$circular = new CircularProtocolAPI();
 
 // Set the NAG key and URL
 $circular->setNAGKey('your_nag_key');
