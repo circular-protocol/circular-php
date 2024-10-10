@@ -1,6 +1,6 @@
 # Circular PHP Class
 
-The `Circular` class is a PHP implementation for interacting with the Circular Labs blockchain. It provides methods for performing various operations such as fetching wallet information, registering a wallet, fetching asset information, and sending transactions.
+The `CircularProtocolAPI` class is a PHP implementation for interacting with the Circular Labs blockchain. It provides methods for performing various operations such as fetching wallet information, registering a wallet, fetching asset information, and sending transactions.
 
 ## Dependencies
 
