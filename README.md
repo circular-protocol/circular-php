@@ -44,3 +44,7 @@ Read the docs on [GitBook](https://circular-protocol.gitbook.io/circular-sdk/api
 ## Disclaimer
 
 This class is provided as-is, and it is up to the user to ensure that it is used correctly and securely. Always remember to keep your private keys secure and never share them with anyone. Always test your code thoroughly before deploying it in a production environment.
+
+## License
+
+This library is open-source and available for both private and commercial use. For detailed terms, please refer to the LICENSE file provided in the repository.
