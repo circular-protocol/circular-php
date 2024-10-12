@@ -10,7 +10,7 @@
  *
  *
  *
- |  Modified Date       : 10/10/2024
+ |  Modified Date       : 12/10/2024
  |  Last Modified By    : Danny De Novi
  |  Modification Notes  : Namespace Added
  *
@@ -42,7 +42,7 @@ class CircularProtocolAPI {
  *---------------------------------------------------------------------------*/
 public function __construct() 
 {
-    $this->version   = '1.0.7';
+    $this->version   = '1.0.8';
     $this->lastError = NULL;
     $this->NAG_KEY   = '';
     $this->NAG_URL   = 'https://nag.circularlabs.io/NAG.php?cep=';
@@ -54,7 +54,7 @@ public function __construct()
  *---------------------------------------------------------------------------*/
 
 /*_______________________________________________________________________*/
-private function fetch($url, $data) 
+public function fetch($url, $data) 
 /*
  | Variables    : string, array or object
  | Returns      : result object
@@ -705,33 +705,6 @@ public function sendTransaction($id, $from, $to, $timestamp, $type, $payload, $n
     $payload    = $this->hexFix($payload);
     $signature  = $this->hexFix($signature);
     $blockchain = $this->hexFix($blockchain);
-    $data = [
-        "ID"         => $id,
-        "From"       => $from,
-        "To"         => $to,
-        "Timestamp"  => $timestamp,
-        "Payload"    => strval($payload),
-        "Nonce"      => strval($nonce),
-        "Signature"  => $signature,
-        "Blockchain" => $blockchain,
-        "Type"       => $type,
-        "Version"    => $this->version
-    ];
-
-    return $this->fetch($this->NAG_URL . 'Circular_AddTransaction_', $data);
-}
-
-public function sendTransactionWithPK($from, $senderPK, $to, $type, $payload, $blockchain){
-
-    $from       = $this->hexFix($from);
-    $to         = $this->hexFix($to);
-    $payload    = $this->stringToHex(json_encode($payload));
-    $blockchain = $this->hexFix($blockchain);
-    $nonce      = intval($this->getWalletNonce($blockchain, $from)->Response->Nonce) + 1;
-    $timestamp  = $this->getFormattedTimestamp();
-    $id         = hash("sha256", $blockchain . $from . $to . $payload . strval($nonce) . $timestamp, false);
-    $signature  = $this->signMessage($id, $senderPK);
-
     $data = [
         "ID"         => $id,
         "From"       => $from,
