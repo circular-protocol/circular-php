@@ -30,11 +30,11 @@ use Elliptic\Utils;
  | VARIABLES
  *---------------------------------------------------------------------------*/
 class CircularProtocolAPI {
-    public  $version;
-    public  $lastError;
-    public  $NAG_KEY;
-    public  $NAG_URL;
-    private $ec;
+    private  	$version;
+    public  	$lastError;
+    private  	$NAG_KEY;
+    private  	$NAG_URL;
+    private 	$ec;
 
 
 /*---------------------------------------------------------------------------
@@ -54,6 +54,28 @@ public function __construct()
  *---------------------------------------------------------------------------*/
 
 /*_______________________________________________________________________*/
+
+public function setNAGKey($key){
+	$this->NAG_KEY = $key;
+}
+
+public function getNAGKey(){
+	return $this->NAG_KEY;
+}
+
+public function setNAGURL($url){
+	$this->NAG_URL = $url;
+}
+
+public function getNAGURL(){
+	return $this->NAG_URL;
+}
+
+public function getVersion(){
+	return $this->version;
+}
+
+	
 public function fetch($url, $data) 
 /*
  | Variables    : string, array or object
