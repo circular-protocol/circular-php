@@ -721,20 +721,20 @@ public function getTransactionOutcome($blockchain, $txID, $timeoutSec)
     $intervalSec = 5; // Polling interval in seconds
     $timeout     = $timeoutSec; // Timeout in seconds
 
-        while (true) {
-            $elapsedTime = time() - $startTime;
-            if ($elapsedTime > $timeout) { throw new \Exception('Timeout exceeded'); }
+    while (true) {
+        $elapsedTime = time() - $startTime;
+        if ($elapsedTime > $timeout) { throw new \Exception('Timeout exceeded'); }
 
-            $transactionData = $this->getTransactionByID($blockchain, $txID, 0, 10);
-	    if ($transactionData && $transactionData['Result'] === 200 && 
-		    $transactionData['Response'] !== 'Transaction Not Found' && 
-		    $transactionData['Response']['Status'] !== 'Pending') 
-	    { return $transactionData['Response']; // Return the transaction data if found and not pending
-	    }
-
-            sleep($intervalSec); // Wait for the interval before checking again
-        }
+        $transactionData = $this->getTransactionByID($blockchain, $txID, 0, 10);
+    if ($transactionData && $transactionData->Result === 200 && 
+        $transactionData->Response !== 'Transaction Not Found' && 
+        $transactionData->Response->Status !== 'Pending') 
+    { return $transactionData->Response; // Return the transaction data if found and not pending
     }
+
+        sleep($intervalSec); // Wait for the interval before checking again
+    }
+}
 
 
     public function keysFromSeedPhrase($seedphrase)
