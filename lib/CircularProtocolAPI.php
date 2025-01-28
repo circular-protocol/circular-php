@@ -540,6 +540,8 @@ public function getVoucher($blockchain, $code)
  */
 {
     $blockchain = $this->hexFix($blockchain);
+    $code = $this->hexFix($code);
+	
     $data = [
                   "Blockchain" => $blockchain,
                   "Code"       => strval($code),
