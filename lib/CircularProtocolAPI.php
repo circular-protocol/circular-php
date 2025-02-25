@@ -353,7 +353,7 @@ public function getWalletBalance($blockchain, $address, $asset)
     $data       = array(
                         "Blockchain" => $blockchain,
                         "Address"    => $address,
-                        "asset"      => $asset,
+                        "Asset"      => $asset,
                         "Version"    => $this->version
                   );
     return $this->fetch($this->NAG_URL . 'Circular_GetWalletBalance_', $data);
